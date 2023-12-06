@@ -3,17 +3,23 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var bodyparser = require('body-parser');
+var bodyParser = require('body-parser');
 var fileupload = require('express-fileupload');
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
-app.use(bodyparser.urlencoded({extended:false}));
-
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(fileupload());
+app.use(session({
+  secret: '123456', // Thay đổi thành một chuỗi bí mật thực sự
+  resave: true,
+  saveUninitialized: true
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
