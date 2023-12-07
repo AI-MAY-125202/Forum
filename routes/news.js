@@ -15,15 +15,16 @@ var storage = multer.diskStorage({
   var upload = multer({ storage: storage });
 
 router.post('/create', upload.single('image'), function (req, res) {
-  
-    const {idTopic, type, content} = req.body
-    var query = 'INSERT INTO news (idTopic, type,content, image) VALUES (?, ?, ?, ?)';
-    // Lưu đường dẫn của ảnh vào cơ sở dữ liệu
-    db.query(query, [idTopic,type,content, req.file.filename], function (err, result) {
-        if (err) {
-            res.status(500).send('Lỗi: ' + err);
-          } else {
-            res.status(200).json(result);
-          }
-        })
-  });
+  const {idTopic, type, content} = req.body
+  var query = 'INSERT INTO news (idTopic, type, content, image, created_at) VALUES (?, ?, ?, ?, NOW())';
+  // Lưu đường dẫn của ảnh vào cơ sở dữ liệu
+  db.query(query, [idTopic,type,content, req.file.filename], function (err, result) {
+      if (err) {
+          res.status(500).send('Lỗi: ' + err);
+        } else {
+          res.status(200).json(result);
+        }
+      })
+});
+
+module.exports = router;
