@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var fileupload = require('express-fileupload');
 var session = require('express-session');
 
+var authenticateToken = require('./routes/middleware');
 var indexRouter = require('./routes/index');
 var topicsRouter = require('./routes/topic');
 var usersRouter = require('./routes/user');
@@ -17,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(fileupload());
 app.use(session({
-  secret: '123456', // Thay đổi thành một chuỗi bí mật thực sự
+  secret: '123456',
   resave: true,
   saveUninitialized: true
 }));
@@ -32,9 +33,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(authenticateToken);
 app.use('/', indexRouter);
-app.use('/topic', topicsRouter);
 app.use('/user', usersRouter);
+app.use('/topic', topicsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
