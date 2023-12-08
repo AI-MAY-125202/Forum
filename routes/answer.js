@@ -7,7 +7,7 @@ router.post('/create', function (req, res) {
     var query = 'insert into answer (idParent, idNews, idUser, open, content, created_at) values (?, ?, ?, ?, ?, NOW())';
     db.query(query,[idParent, idNews, idUser, open, content], function (err, result) {
         if (err) res.status(500).send('Lỗi: ' + err);
-        res.status(200).json(result);
+        res.json(result);
     });
 });
 
@@ -17,7 +17,7 @@ router.get('/getall', function (req, res) {
                 `;
     db.query(query, function (err, result) {
         if (err) res.status(500).send('Lỗi: ' + err);
-        res.status(200).json(result);
+        res.json(result);
     });
 });
 

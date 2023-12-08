@@ -7,13 +7,13 @@ router.get('/getselect', function (req, res) {
     var query = "select * from topic";
     db.query(query, function (err, result) {
         if (err) res.status(500).send('Lỗi: ' + err);
-        res.status(200).json(result);
+        res.json(result);
     })})
 router.post('/create', function (req, res) {
     var query = 'insert into topic (name) values (?)';
     db.query(query,[req.body.name], function (err, result) {
         if (err) res.status(500).send('Lỗi: ' + err);
-        res.status(200).json(result);
+        res.json(result);
     });
 });
 

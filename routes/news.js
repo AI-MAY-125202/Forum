@@ -2,18 +2,19 @@ var express = require('express');
 var router = express.Router();
 var db = require('./dbconnect');
 var path = require('path');
+var public = (path.join(__dirname, '../public/images/'));
 
 router.post('/create', (req, res) => {
   const { idTopic, idUser, type, content } = req.body;
-
+  
   if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send('No files were uploaded.');
+    return res.status(400).send('No files were uploaded.');
   }
-
-  const image = req.files.image;
+  
+  const image = req.files.files;
   const fileName = Date.now() + path.extname(image.name);
 
-  image.mv('uploads/' + fileName, (err) => {
+  image.mv(public + fileName, (err) => {
       if (err) {
           return res.status(500).send('Error uploading file: ' + err);
       }
@@ -24,7 +25,7 @@ router.post('/create', (req, res) => {
               return res.status(500).send('Error inserting data into the database: ' + err);
           }
 
-          res.status(200).json(result);
+          res.json(result);
       });
   });
 });
@@ -35,7 +36,7 @@ router.get('/getall', function (req, res) {
               inner join user on news.idUser = user.id`;
   db.query(query, function (err, result) {
       if (err) res.status(500).send('Lỗi: ' + err);
-      res.status(200).json(result);
+      res.json(result);
   });
 });
 
