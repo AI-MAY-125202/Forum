@@ -20,13 +20,12 @@ router.post('/create', (req, res) => {
       }
 
       const query = 'INSERT INTO news (idTopic, idUser, type, content, image, created_at) VALUES (?, ?, ?, ?, ?, NOW())';
-      var data = 'select * from news where id = last_insert_id()';
       db.query(query, [idTopic, idUser, type, content, fileName], (err, result) => {
           if (err) {
               return res.status(500).send('Error inserting data into the database: ' + err);
           }
 
-          res.json(data[0]);
+          res.json(result);
       });
   });
 });
