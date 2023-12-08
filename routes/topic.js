@@ -11,9 +11,10 @@ router.get('/getall', function (req, res) {
     })})
 router.post('/create', function (req, res) {
     var query = 'insert into topic (name) values (?)';
+    var data = 'select * from topic where id = last_insert_id()';
     db.query(query,[req.body.name], function (err, result) {
         if (err) res.status(500).send('Lỗi: ' + err);
-        res.json(result);
+        res.json(data[0]);
     });
 });
 
