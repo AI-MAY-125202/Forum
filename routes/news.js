@@ -4,7 +4,7 @@ var db = require('./dbconnect');
 var path = require('path');
 
 router.post('/create', (req, res) => {
-  const { idTopic, type, content } = req.body;
+  const { idTopic, idUser, type, content } = req.body;
 
   if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).send('No files were uploaded.');
@@ -19,7 +19,7 @@ router.post('/create', (req, res) => {
       }
 
       const query = 'INSERT INTO news (idTopic, idUser, type, content, image, created_at) VALUES (?, ?, ?, ?, ?, NOW())';
-      db.query(query, [idTopic, type, content, fileName], (err, result) => {
+      db.query(query, [idTopic, idUser, type, content, fileName], (err, result) => {
           if (err) {
               return res.status(500).send('Error inserting data into the database: ' + err);
           }
