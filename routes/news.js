@@ -20,13 +20,15 @@ router.post('/create', (req, res) => {
       }
 
       const query = 'INSERT INTO news (idTopic, idUser, type, content, image, created_at) VALUES (?, ?, ?, ?, ?, NOW())';
-      var data = 'select * from news where id = last_insert_id()';
+      var selectQuery = `select * from news
+                        inner join user on news.idUser = user.id
+                        where news.id = last_insert_id()`;
       db.query(query, [idTopic, idUser, type, content, fileName], (err, result) => {
-          if (err) {
-              return res.status(500).send('Error inserting data into the database: ' + err);
-          }
-
-          res.json(data[0]);
+        if (err) res.status(500).send('Lỗi: ' + err);
+        db.query(selectQuery, function (err, selectedResult) {
+          if (err) res.status(500).send('Lỗi: ' + err);
+          res.json(selectedResult[0]);
+        });
       });
   });
 });
@@ -34,7 +36,8 @@ router.post('/create', (req, res) => {
 router.get('/getall', function (req, res) {
   var query = `select user.id, user.username, user.image as avatar, topic.name as topicname, news.* from topic
               inner join news on topic.id = news.idTopic
-              inner join user on news.idUser = user.id`;
+              inner join user on news.idUser = user.id
+              order by news.id DESC`;
   db.query(query, function (err, result) {
       if (err) res.status(500).send('Lỗi: ' + err);
       res.json(result);
