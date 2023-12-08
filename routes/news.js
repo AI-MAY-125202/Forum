@@ -18,7 +18,7 @@ router.post('/create', (req, res) => {
           return res.status(500).send('Error uploading file: ' + err);
       }
 
-      const query = 'INSERT INTO news (idTopic, idUser, type, content, image, created_at) VALUES (?, ?, ?, ?, NOW())';
+      const query = 'INSERT INTO news (idTopic, idUser, type, content, image, created_at) VALUES (?, ?, ?, ?, ?, NOW())';
       db.query(query, [idTopic, type, content, fileName], (err, result) => {
           if (err) {
               return res.status(500).send('Error inserting data into the database: ' + err);

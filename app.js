@@ -6,6 +6,7 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var fileupload = require('express-fileupload');
 var session = require('express-session');
+var cors = require('cors');
 
 // var authenticateToken = require('./routes/middleware');
 var indexRouter = require('./routes/index');
@@ -24,6 +25,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
