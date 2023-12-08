@@ -3,7 +3,7 @@ var router = express.Router();
 var db = require('./dbconnect');
 
 // getalldata
-router.get('/getselect', function (req, res) {
+router.get('/getall', function (req, res) {
     var query = "select * from topic";
     db.query(query, function (err, result) {
         if (err) res.status(500).send('Lỗi: ' + err);
