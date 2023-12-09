@@ -17,10 +17,10 @@ router.post('/create', function (req, res) {
     });
 });
 
-router.get('/getall', function (req, res) {
+router.get('/getall/:id', function (req, res) {
     var query = `select user.id, user.username, user.image, answer.* from answer
-                inner join user on answer.idUser = user.id
-                `;
+                inner join user on answer.idUser = user.id where answer.idNews =
+                ` + req.body.id;
     db.query(query, function (err, result) {
         if (err) res.status(500).send('Lỗi: ' + err);
         res.json(result);
